@@ -1,0 +1,481 @@
+openapi: '3.0.3'
+info:
+  title: Testing Open API
+  description: Belajar Menggunakan Open API
+  version: '1.0'
+  contact:
+    name: dimsky
+    email: dimsky.cool@gmail.com
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+servers:
+  - url: https://localhost:8000/api/{environment}
+    description: Testing Open API
+    variables:
+      environment:
+        default: dev
+        description: The name of the environment
+        enum:
+          - dev
+          - test
+          - stg
+          - prod
+externalDocs:
+  url: https://swagger.io
+  description: Find more info here
+
+paths:
+  /todolists:
+    get:
+      tags:
+        - todolists
+      summary: Get all todolists
+      description: Get all active todolists by default
+      parameters:
+        - name: is_active
+          description: filter todolist by is_active
+          in: query
+          required: false
+          schema:
+            type: boolean
+            default: true
+        - name: name
+          description: filter todolist by name
+          in: query
+          required: false
+          schema:
+            type: string
+            maxLength: 250
+            nullable: true
+          examples:
+            Java:
+              description: Get all todolists with name Java
+              value: Java
+            Python:
+              description: Get all todolists with name Python
+              value: Python
+            PHP:
+              description: Get all todolists with name PHP
+              value: PHP
+      responses:
+        '200':
+          description: Get Todolist Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    name:
+                      type: string
+                    priority:
+                      type: number
+                    tags:
+                      type: array
+                      items:
+                        type: string
+                    created_at:
+                      type: string
+                    updated_at:
+                      type: string
+
+              examples:
+                Success:
+                  description: Get Todolist Success
+                  value:
+                    - id: 1
+                      name: Java
+                      priority: 1
+                      tags:
+                        - Java
+                        - Spring
+                    - id: 2
+                      name: Python
+                      priority: 1
+                      tags:
+                        - Python
+                        - Django
+                    - id: 3
+                      name: PHP
+                      priority: 1
+                      tags:
+                        - PHP
+                        - Laravel
+    post:
+      tags:
+        - todolists
+      summary: Create a new todolist
+      description: Create a new todolist to database
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - priority
+              properties:
+                name:
+                  type: string
+                  maxLength: 250
+                  minLength: 1
+                  nullable: false
+                priority:
+                  type: number
+                  format: int32
+                  default: 1
+                  nullable: false
+                tags:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+                    minLength: 1
+                    nullable: false
+            examples:
+              Java:
+                description: Create a new todolist with name Java
+                value:
+                  name: Java
+                  priority: 1
+                  tags:
+                    - Java
+                    - Spring
+              Python:
+                description: Create a new todolist with name Python
+                value:
+                  name: Python
+                  priority: 1
+                  tags:
+                    - Python
+                    - Django
+              PHP:
+                description: Create a new todolist with name PHP
+                value:
+                  name: PHP
+                  priority: 1
+                  tags:
+                    - PHP
+                    - Laravel
+      responses:
+        '200':
+          description: Create Todolist Success
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - priority
+                properties:
+                  name:
+                    type: string
+                    maxLength: 250
+                    minLength: 1
+                    nullable: false
+                  priority:
+                    type: number
+                    format: int32
+                    default: 1
+                    nullable: false
+                  tags:
+                    type: array
+                    minItems: 1
+                    items:
+                      type: string
+                      minLength: 1
+                      nullable: false
+              examples:
+                Java:
+                  description: Create a new todolist with name Java
+                  value:
+                    id: 1
+                    name: Java
+                    priority: 1
+                    tags:
+                      - Java
+                      - Spring
+                Python:
+                  description: Create a new todolist with name Python
+                  value:
+                    id: 2
+                    name: Python
+                    priority: 1
+                    tags:
+                      - Python
+                      - Django
+                PHP:
+                  description: Create a new todolist with name PHP
+                  value:
+                    id: 3
+                    name: PHP
+                    priority: 1
+                    tags:
+                      - PHP
+                      - Laravel
+  /todolists/{todolistId}/edit:
+    get:
+      tags:
+        - todolists
+      summary: Get specific todolist
+      description: Get specific todolist by id
+      parameters:
+        - name: todolistId
+          description: The id of the todolist
+          in: path
+          required: true
+          schema:
+            type: string
+          examples:
+            Java:
+              description: Get todolist with id 1
+              value: 1
+            Python:
+              description: Get todolist with id 2
+              value: 2
+            PHP:
+              description: Get todolist with id 3
+              value: 3
+      responses:
+        '200':
+          description: Get Todolist Success by id
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - priority
+                properties:
+                  name:
+                    type: string
+                    maxLength: 250
+                    minLength: 1
+                    nullable: false
+                  priority:
+                    type: number
+                    format: int32
+                    default: 1
+                    nullable: false
+                  tags:
+                    type: array
+                    minItems: 1
+                    items:
+                      type: string
+                      minLength: 1
+                      nullable: false
+              examples:
+                Java:
+                  description: Create a new todolist with name Java
+                  value:
+                    name: Java
+                    priority: 1
+                    tags:
+                      - Java
+                      - Spring
+                Python:
+                  description: Create a new todolist with name Python
+                  value:
+                    name: Python
+                    priority: 1
+                    tags:
+                      - Python
+                      - Django
+                PHP:
+                  description: Create a new todolist with name PHP
+                  value:
+                    name: PHP
+                    priority: 1
+                    tags:
+                      - PHP
+                      - Laravel
+    put:
+      tags:
+        - todolists
+      summary: Update existing todolist
+      description: Update existing todolist in database
+      parameters:
+        - name: todolistId
+          description: The id of the todolist
+          in: path
+          required: true
+          schema:
+            type: string
+          examples:
+            Java:
+              description: Get todolist with id 1
+              value: 1
+            Python:
+              description: Get todolist with id 2
+              value: 2
+            PHP:
+              description: Get todolist with id 3
+              value: 3
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+                - priority
+              properties:
+                name:
+                  type: string
+                  maxLength: 250
+                  minLength: 1
+                  nullable: false
+                priority:
+                  type: number
+                  format: int32
+                  default: 1
+                  nullable: false
+                tags:
+                  type: array
+                  minItems: 1
+                  items:
+                    type: string
+                    minLength: 1
+                    nullable: false
+            examples:
+              Java:
+                description: Create a new todolist with name Java
+                value:
+                  name: Java
+                  priority: 1
+                  tags:
+                    - Java
+                    - Spring
+              Python:
+                description: Create a new todolist with name Python
+                value:
+                  name: Python
+                  priority: 1
+                  tags:
+                    - Python
+                    - Django
+              PHP:
+                description: Create a new todolist with name PHP
+                value:
+                  name: PHP
+                  priority: 1
+                  tags:
+                    - PHP
+                    - Laravel
+      responses:
+        '200':
+          description: Update Todolist Success by id
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - priority
+                properties:
+                  name:
+                    type: string
+                    maxLength: 250
+                    minLength: 1
+                    nullable: false
+                  priority:
+                    type: number
+                    format: int32
+                    default: 1
+                    nullable: false
+                  tags:
+                    type: array
+                    minItems: 1
+                    items:
+                      type: string
+                      minLength: 1
+                      nullable: false
+              examples:
+                Java:
+                  description: Create a new todolist with name Java
+                  value:
+                    id: 1
+                    name: Java
+                    priority: 1
+                    tags:
+                      - Java
+                      - Spring
+                Python:
+                  description: Create a new todolist with name Python
+                  value:
+                    id: 2
+                    name: Python
+                    priority: 1
+                    tags:
+                      - Python
+                      - Django
+                PHP:
+                  description: Create a new todolist with name PHP
+                  value:
+                    id: 3
+                    name: PHP
+                    priority: 1
+                    tags:
+                      - PHP
+                      - Laravel
+    delete:
+      tags:
+        - todolists
+      summary: Delete existing todolist
+      description: Delete existing todolist in database
+      parameters:
+        - name: todolistId
+          description: The id of the todolist
+          in: path
+          required: true
+          schema:
+            type: string
+          examples:
+            Java:
+              description: Get todolist with id 1
+              value: 1
+            Python:
+              description: Get todolist with id 2
+              value: 2
+            PHP:
+              description: Get todolist with id 3
+              value: 3
+      responses:
+        '200':
+          description: Delete Todolist Success by id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 1
+              examples:
+                Success:
+                  description: Delete Todolist Success
+                  value:
+                    status: true
+                    message: Success delete todolist with id Java
+        '404':
+          description: Failed Not Found Delete Todolist by id
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: 1
+              examples:
+                Failed:
+                  description: Failed Not Found Delete Todolist
+                  value:
+                    status: false
+                    message: Failed Not Found Delete Todolist by id
